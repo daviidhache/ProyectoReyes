@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.model.Gestion;
 import com.proyecto.service.GestionService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -32,11 +34,23 @@ public class GestionController {
 	 * 
 	 * @return List<Gestion> gestiones actuales
 	 */
+	@Operation(summary = "Lista de solicitudes", responses = {
+			@ApiResponse(responseCode = "200", description = "Ok"),
+			@ApiResponse(responseCode = "500", description = "Error del servidor"),
+			@ApiResponse(responseCode = "404", description = "Error en la petición")
+
+	})
+	
 	@GetMapping
 	public List<Gestion> todas() {
 		return service.todas();
 	}
+	@Operation(summary = "Gestion", responses = {
+			@ApiResponse(responseCode = "200", description = "Encontrada"),
+			@ApiResponse(responseCode = "500", description = "Error del servidor"),
+			@ApiResponse(responseCode = "404", description = "Error en la petición. No encontrada")
 
+	})
 	@GetMapping("/{cod}")
 	ResponseEntity<Object> obtenerGestion(@PathVariable Long cod) {
 
@@ -48,7 +62,12 @@ public class GestionController {
 
 		}
 	}
+	@Operation(summary = "Nueva solicitud", description = "Da de alta una solicitud", responses = {
+			@ApiResponse(responseCode = "201", description = "Solicitud creada"),
+			@ApiResponse(responseCode = "500", description = "Error del servidor"),
+			@ApiResponse(responseCode = "404", description = "Error en la petición")
 
+	})
 	@PostMapping("/nueva")
 	ResponseEntity<Object> nuevaGestion(@Valid @RequestBody Gestion g, BindingResult br) {
 		if (br.hasErrors()) {
@@ -87,7 +106,12 @@ public class GestionController {
 		}
 
 	}
-	
+	@Operation(summary = "Lista de solicitudes",description ="Lista de solicitudes por nombre de comunidad" , responses = {
+			@ApiResponse(responseCode = "200", description = "Ok"),
+			@ApiResponse(responseCode = "500", description = "Error del servidor"),
+			@ApiResponse(responseCode = "404", description = "Error en la petición")
+
+	})
 	@GetMapping("/comunidad/{nombre}")
 	public List<Gestion> gestionesPorComunidad(@PathVariable String nombre){
 		return service.gestionesPorComunidad(nombre);
