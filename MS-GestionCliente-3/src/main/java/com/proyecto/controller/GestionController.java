@@ -24,6 +24,7 @@ import jakarta.validation.Valid;
 @RestController
 @Tag(name = "Gestión solicitudes", description = "La API de la gestión")
 
+
 @RequestMapping("/gestiones")
 public class GestionController {
 	@Autowired
