@@ -1,1 +1,0 @@
-INSERT INTO participantes (dni,nombre,app1,app2,email,fec_nacimiento) values("28945784E","Jose Luis","Mateos","Nevado","mateito@gmail.com","1995-12-03")
