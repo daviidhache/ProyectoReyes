@@ -3,6 +3,7 @@ package com.proyecto.service;
 import java.util.List;
 
 import com.proyecto.model.Gestion;
+import com.proyecto.model.InfoCcaaDto;
 
 /**
  * Definimos los métodos en este servicio
@@ -37,5 +38,5 @@ public interface GestionService {
 	boolean verificarDatos(Gestion g);
 	
 	List<Gestion> gestionesPorComunidad(String comunidad);
-
+	InfoCcaaDto totalesPorComunidad(String comunidad);
 }

@@ -42,7 +42,6 @@ public class Participante implements Serializable {
 	@NotBlank
 	private String app2;
 	@Column(nullable = false, unique = true, length = 40)
-
 	@NotNull
 	@NotBlank
 	@Email

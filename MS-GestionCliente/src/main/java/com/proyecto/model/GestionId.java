@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Positive;
 
 @Embeddable
@@ -14,8 +15,8 @@ public class GestionId implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@NotNull
-	@Positive
+	private static Long numGestiones = 0L;
+	@Null
 	private Long id;
 	@NotNull
 	@NotBlank
@@ -28,9 +29,8 @@ public class GestionId implements Serializable {
 		super();
 	}
 
-	public GestionId(Long id, String participante, Long ccaa) {
+	public GestionId(String participante, Long ccaa) {
 		super();
-		this.id = id;
 		this.participante = participante;
 		this.ccaa = ccaa;
 	}
@@ -59,6 +59,12 @@ public class GestionId implements Serializable {
 		this.ccaa = ccaa;
 	}
 
-	
+	public static Long getNumGestiones() {
+		return numGestiones;
+	}
+
+	public static void setNumGestiones(Long numGestiones) {
+		GestionId.numGestiones = numGestiones;
+	}
 
 }

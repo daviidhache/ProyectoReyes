@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.proyecto.model.CcaaDto;
 import com.proyecto.model.Gestion;
+import com.proyecto.model.InfoCcaaDto;
 import com.proyecto.repository.GestionRepository;
 
 @Service
@@ -37,7 +38,7 @@ public class GestionImpl implements GestionService {
 	public void nuevaGestion(Gestion g) {
 
 		repo.save(g);
-
+		
 	}
 
 	@Override
@@ -109,4 +110,24 @@ public class GestionImpl implements GestionService {
 		return lista;
 	}
 
+	@Override
+	public InfoCcaaDto totalesPorComunidad(String comunidad) {
+		InfoCcaaDto info = null;
+		try {
+			Object[] datos = new Object[1];
+			datos[0] = comunidad.toLowerCase();
+			ResponseEntity<CcaaDto> response = template.exchange(API_CCAA + "/nombre/{nombre}", HttpMethod.GET,
+					HttpEntity.EMPTY, CcaaDto.class, datos[0]);
+			CcaaDto ccaa = response.getBody();
+			int totalPorComunidad = repo.totalesPorComunidad(ccaa.getCod());
+			info = new InfoCcaaDto(ccaa.getNombre(), totalPorComunidad);
+		} catch (HttpClientErrorException e) {
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+				return info;
+			}
+
+		}
+		return info;
+
+	}
 }

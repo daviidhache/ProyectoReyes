@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.model.Gestion;
+import com.proyecto.model.GestionId;
+import com.proyecto.model.InfoCcaaDto;
 import com.proyecto.service.GestionService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,19 +36,18 @@ public class GestionController {
 	 * 
 	 * @return List<Gestion> gestiones actuales
 	 */
-	@Operation(summary = "Lista de solicitudes", responses = {
-			@ApiResponse(responseCode = "200", description = "Ok"),
+	@Operation(summary = "Lista de solicitudes", responses = { @ApiResponse(responseCode = "200", description = "Ok"),
 			@ApiResponse(responseCode = "500", description = "Error del servidor"),
 			@ApiResponse(responseCode = "404", description = "Error en la petición")
 
 	})
-	
+
 	@GetMapping
 	public List<Gestion> todas() {
 		return service.todas();
 	}
-	@Operation(summary = "Gestion", responses = {
-			@ApiResponse(responseCode = "200", description = "Encontrada"),
+
+	@Operation(summary = "Gestion", responses = { @ApiResponse(responseCode = "200", description = "Encontrada"),
 			@ApiResponse(responseCode = "500", description = "Error del servidor"),
 			@ApiResponse(responseCode = "404", description = "Error en la petición. No encontrada")
 
@@ -62,6 +63,7 @@ public class GestionController {
 
 		}
 	}
+
 	@Operation(summary = "Nueva solicitud", description = "Da de alta una solicitud", responses = {
 			@ApiResponse(responseCode = "201", description = "Solicitud creada"),
 			@ApiResponse(responseCode = "500", description = "Error del servidor"),
@@ -84,8 +86,10 @@ public class GestionController {
 					// crea la gestión
 					boolean existen = service.verificarDatos(g);
 					if (existen) {
-
+						GestionId.setNumGestiones(GestionId.getNumGestiones() + 1);
+						g.getGestionId().setId(GestionId.getNumGestiones());
 						service.nuevaGestion(g);
+
 						return new ResponseEntity<Object>("Solicitud creada", HttpStatus.OK);
 
 					} else {
@@ -106,14 +110,20 @@ public class GestionController {
 		}
 
 	}
-	@Operation(summary = "Lista de solicitudes",description ="Lista de solicitudes por nombre de comunidad" , responses = {
+
+	@Operation(summary = "Lista de solicitudes", description = "Lista de solicitudes por nombre de comunidad", responses = {
 			@ApiResponse(responseCode = "200", description = "Ok"),
 			@ApiResponse(responseCode = "500", description = "Error del servidor"),
 			@ApiResponse(responseCode = "404", description = "Error en la petición")
 
 	})
 	@GetMapping("/comunidad/{nombre}")
-	public List<Gestion> gestionesPorComunidad(@PathVariable String nombre){
+	public List<Gestion> gestionesPorComunidad(@PathVariable String nombre) {
 		return service.gestionesPorComunidad(nombre);
+	}
+
+	@GetMapping("/info/{comunidad}")
+	public InfoCcaaDto totales(@PathVariable String comunidad) {
+		return service.totalesPorComunidad(comunidad);
 	}
 }
