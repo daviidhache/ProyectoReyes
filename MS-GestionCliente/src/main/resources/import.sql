@@ -1,1 +1,0 @@
-insert into gestiones (id,fec_solicitud,categoria,participante,ccaa) values(1,"2024-12-21","MELCHOR","28945784E",1)
