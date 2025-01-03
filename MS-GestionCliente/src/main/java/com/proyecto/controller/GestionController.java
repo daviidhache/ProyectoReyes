@@ -1,6 +1,7 @@
 package com.proyecto.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -125,5 +126,11 @@ public class GestionController {
 	@GetMapping("/info/{comunidad}")
 	public InfoCcaaDto totales(@PathVariable String comunidad) {
 		return service.totalesPorComunidad(comunidad);
+	}
+
+	@GetMapping("/totales/{comunidad}")
+	public Map<String, String> totalesCategoria(@PathVariable String comunidad) {
+		return service.totalesCategoriasComunidad(comunidad);
+
 	}
 }

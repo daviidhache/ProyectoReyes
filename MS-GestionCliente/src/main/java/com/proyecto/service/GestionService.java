@@ -1,6 +1,7 @@
 package com.proyecto.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.proyecto.model.Gestion;
 import com.proyecto.model.InfoCcaaDto;
@@ -39,4 +40,5 @@ public interface GestionService {
 	
 	List<Gestion> gestionesPorComunidad(String comunidad);
 	InfoCcaaDto totalesPorComunidad(String comunidad);
+	Map<String, String> totalesCategoriasComunidad(String comunidad);
 }

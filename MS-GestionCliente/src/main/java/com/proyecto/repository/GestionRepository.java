@@ -24,5 +24,8 @@ public interface GestionRepository extends JpaRepository<Gestion, Long> {
 
 	@Query(" SELECT count(*) FROM Gestion g WHERE g.gestionId.ccaa=:cod GROUP BY g.gestionId.ccaa")
 	int totalesPorComunidad(@Param("cod") Long cod);
+	
+	@Query("SELECT g.categoria,count(*) FROM Gestion g  WHERE g.gestionId.ccaa=:cod GROUP BY g.categoria")
+	List<Object[]> TotalescategoriasPorComunidad(@Param("cod") Long cod);
 
 }

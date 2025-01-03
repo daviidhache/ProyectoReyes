@@ -1,7 +1,9 @@
 package com.proyecto.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -38,7 +40,7 @@ public class GestionImpl implements GestionService {
 	public void nuevaGestion(Gestion g) {
 
 		repo.save(g);
-		
+
 	}
 
 	@Override
@@ -129,5 +131,31 @@ public class GestionImpl implements GestionService {
 		}
 		return info;
 
+	}
+
+	@Override
+	public Map<String, String> totalesCategoriasComunidad(String comunidad) {
+		Map<String, String> listaMap = new HashMap<>();
+		try {
+
+			Object[] datos = new Object[1];
+			datos[0] = comunidad.toLowerCase();
+			ResponseEntity<CcaaDto> response = template.exchange(API_CCAA + "/nombre/{nombre}", HttpMethod.GET,
+					HttpEntity.EMPTY, CcaaDto.class, datos[0]);
+			CcaaDto ccaa = response.getBody();
+			List<Object[]> lista = repo.TotalescategoriasPorComunidad(ccaa.getCod());
+			for (Object[] item : lista) {
+				String cat = String.valueOf(item[0]);
+				String total = String.valueOf(item[1]);
+				listaMap.put(cat, total);
+			}
+		} catch (HttpClientErrorException e) {
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+				return listaMap;
+			}
+
+			
+		}
+		return listaMap;
 	}
 }
