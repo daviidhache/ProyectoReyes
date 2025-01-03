@@ -10,6 +10,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "gestiones")
@@ -17,10 +18,12 @@ public class Gestion implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@EmbeddedId
+	@NotNull
 	private GestionId gestionId;
 	@Column(name = "fec_solicitud")
 	private LocalDate fechaSolicitud;
 	@Column(nullable = false)
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Cat categoria;
 
